@@ -280,3 +280,18 @@ textarea {
         page-break-after: avoid;
     }
 }
+
+
+/*
+    additions
+*/
+img.zt-top-logo {
+    height: 1.75rem;
+    width: auto;
+    position: absolute;
+    top: 0.75rem;
+    left: 1.25rem;
+}
+zt-banner-color {
+    color: #333333;
+}
