@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+
+<html class="no-js" lang="">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1"><!-- <link rel="apple-touch-icon" href="apple-touch-icon.png"> -->
+    <!-- Place favicon.ico in the root directory -->
+    <link rel="stylesheet" href="css/bulma.css">
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+    <!--[if lt IE 8]>
+            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+    <nav class="nav bluegrey500-bkgnd">
+        <div class="nav-left">
+            <a class="nav-item"><img src="img/zerotier-logo-white.png" alt="ZeroTier logo"></a> <span class="nav-item bluegrey50">ZeroTier</span>
+        </div>
+
+        <div class="nav-center">
+            &nbsp;
+        </div>
+
+        <div class="nav-right">
+            &nbsp;
+        </div>
+    </nav>
+
+    <section class="section">
+        <div class="container">
+            <div class="heading">
+                <h1 class="title">Status</h1>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th><abbr title="controller">Controller</abbr></th>
+
+                            <th><abbr title="apiVersion">apiVersion</abbr></th>
+
+                            <th><abbr title="clock">Clock</abbr></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr id="statusRow">
+                            <td>Off</td>
+
+                            <td>?</td>
+
+                            <td>?</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div class="heading">
+                <h1 class="title">Networks</h1>
+
+                <table class="table" id="networkList">
+                    <thead>
+                        <tr>
+                            <th><abbr title="count">&nbsp;</abbr></th>
+
+                            <th><abbr title="name">Name</abbr></th>
+
+                            <th><abbr title="network_ID">Network ID</abbr></th>
+
+                            <th><abbr title="actions">&nbsp;</abbr></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>+</td>
+
+                            <td>add new network</td>
+
+                            <td><span class="icon"><i class="fa fa-file-o" aria-hidden="true" id="networkNew"></i></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <article class="message" id="networkPanel">
+            <div class="message-header">
+                <p>New Network</p>
+                <button class="delete"></button>
+            </div>
+
+            <div class="message-body">
+                <form action="add-edit-network.cgi" onsubmit="event.preventDefault(); processNetworkForm();" id="networkPanelForm">
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">ID</label>
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input name="id" class="input" type="text" placeholder="Disabled input">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">NWID</label>
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input name="nwid" class="input" type="text" placeholder="Disabled input" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Clock</label>
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input name="clock" class="input" type="text" placeholder="Disabled input" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Name</label>
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input name="name" class="input" type="text" placeholder="Normal sized input" maxlength="16" size="16">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Capabilities</label>
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <textarea name="capabilities" class="textarea" placeholder="No data">
+</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Object Type</label>
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input name="objtype" class="input" type="text" placeholder="Normal sized input" maxlength="16" size="16">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">Private</label>
+                        </div>
+
+                        <div class="field-body" style="margin-top:7px;">
+                            <div class="field is-narrow">
+                                <div class="control">
+                                    <label class="radio"><input type="radio" name="private" value="true">Yes</label> <label class="radio"><input type="radio" name="private" value="false">No</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">Enable Broadcast</label>
+                        </div>
+
+                        <div class="field-body" style="margin-top:7px;">
+                            <div class="field is-narrow">
+                                <div class="control">
+                                    <label class="radio"><input type="radio" name="enableBroadcast" value="true">Yes</label> <label class="radio"><input type="radio" name="enableBroadcast" value="false">No</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">Allow Passive Bridging</label>
+                        </div>
+
+                        <div class="field-body" style="margin-top:7px;">
+                            <div class="field is-narrow">
+                                <div class="control">
+                                    <label class="radio"><input type="radio" name="allowPassiveBridging" value="true">Yes</label> <label class="radio"><input type="radio" name="allowPassiveBridging" value="false">No</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">IPv4 Assign Mode</label>
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <textarea name="v4AssignMode" class="textarea" placeholder="Explain how we can help you">
+</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">IPv6 Assign Mode</label>
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <textarea name="v6AssignMode" class="textarea" placeholder="Modes here">
+</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Multicast Limit</label>
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input name="multicastLimit" class="input" type="text">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Creation Time</label>
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input name="creationTime" class="input" type="text" placeholder="Disabled input" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Revision</label>
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input name="revision" class="input" type="text" placeholder="Disabled input" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Last Modified</label>
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input name="lastModified" class="input" type="text" placeholder="Disabled input" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Authorized Member Count</label>
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input name="authorizedMemberCount" class="input" type="text" placeholder="Disabled input" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Active Member Count</label>
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input name="activeMemberCount" class="input" type="text" placeholder="Disabled input" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Total Member Count</label>
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input name="totalMemberCount" class="input" type="text" placeholder="Disabled input" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Member Revision Counter</label>
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input name="memberRevisionCounter" class="input" type="text" placeholder="Disabled input" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Authentication Tokens</label>
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <textarea name="authTokens" class="textarea" placeholder="No data">
+</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Routes</label>
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <textarea name="routes" class="textarea" placeholder="No data">
+</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">IP Assignment Pools</label>
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <textarea name="ipAssignmentPools" class="textarea" placeholder="No data">
+</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Rules</label>
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <textarea name="rules" class="textarea" placeholder="No data">
+</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                     <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Tags</label>
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <textarea name="tags" class="textarea" placeholder="No data">
+</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <!-- Left empty for spacing -->
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <button id="networkFormSubmit" class="button is-primary">New Network</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </article>
+    </section>
+
+    <section class="section">
+        <div class="container" id="userList">
+            <div class="heading">
+                <h1 class="title">Users</h1>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th><abbr title="count">&nbsp;</abbr></th>
+
+                            <th><abbr title="user_ID">User</abbr></th>
+
+                            <th><abbr title="actions">&nbsp;</abbr></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>+</td>
+
+                            <td>add new user</td>
+
+                            <td><span class="icon"><i class="fa fa-file-o" aria-hidden="true" id="userNew"></i></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <article class="message" id="userPanel">
+            <div class="message-header">
+                <p>New User</p>
+                <button class="delete"></button>
+            </div>
+
+            <div class="message-body">
+                <form action="add-edit-user.cgi" onsubmit="event.preventDefault(); processUserForm();" id="userPanelForm">
+                    <input name="networkID" type="hidden" value="">
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">ID</label>
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input name="id" class="input" type="text">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Address</label>
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input name="address" class="input" type="text" placeholder="Disabled input" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">NWID</label>
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input name="nwid" class="input" type="text" placeholder="Disabled input" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Clock</label>
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input name="clock" class="input" type="text" placeholder="Disabled input" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">Authorized</label>
+                        </div>
+
+                        <div class="field-body" style="margin-top:7px;">
+                            <div class="field is-narrow">
+                                <div class="control">
+                                    <label class="radio"><input type="radio" name="authorized" value="true">Yes</label> <label class="radio"><input type="radio" name="authorized" value="false">No</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Authen History</label>
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <textarea name="authHistory" class="textarea" placeholder="Disabled input" disabled>
+</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Capabilities</label>
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <textarea name="capabilities" class="textarea" placeholder="Explain how we can help you">
+</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Creation Time</label>
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input name="creationTime" class="input" type="text" placeholder="Disabled input" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Last Authorized Time</label>
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input name="lastAuthorizedTime" class="input" type="text" placeholder="Disabled input" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Last Deauthorized Time</label>
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input name="lastDeauthorizedTime" class="input" type="text" placeholder="Disabled input" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Last Modified</label>
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input name="lastModified" class="input" type="text" placeholder="Disabled input" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Last Request MetaData"</label>
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input name="lastRequestMetaData" class="input" type="text" placeholder="Disabled input" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">No Auto Assign IP addresses</label>
+                        </div>
+
+                        <div class="field-body" style="margin-top:7px;">
+                            <div class="field is-narrow">
+                                <div class="control">
+                                    <label class="radio"><input type="radio" name="noAutoAssignIps" value="true">Yes</label> <label class="radio"><input type="radio" name="noAutoAssignIps" value="false">No</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Object Type</label>
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input name="objtype" class="input" type="text" placeholder="Disabled input" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <label class="label">ActiveBridge</label>
+                        </div>
+
+                        <div class="field-body" style="margin-top:7px;">
+                            <div class="field is-narrow">
+                                <div class="control">
+                                    <label class="radio"><input type="radio" name="activeBridge" value="true">Yes</label> <label class="radio"><input type="radio" name="activeBridge" value="false">No</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Identity</label>
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input name="identity" class="input" type="text" placeholder="Disabled input" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">IP Assignments</label>
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <textarea name="ipAssignments" class="textarea" placeholder="Explain how we can help you">
+</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Revision</label>
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <input name="revision" class="input" type="text" placeholder="Disabled input" disabled>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Recent Logs</label>
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <textarea name="recentLog" class="textarea" placeholder="Disabled input" disabled>
+</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Tags</label>
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <textarea name="tags" class="textarea" placeholder="Explain how we can help you">
+</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field is-horizontal">
+                        <div class="field-label">
+                            <!-- Left empty for spacing -->
+                        </div>
+
+                        <div class="field-body">
+                            <div class="field">
+                                <div class="control">
+                                    <button id="userFormSubmit" class="button is-primary">New User</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </article>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="content has-text-centered">
+                <p></p>
+
+                <p></p>
+            </div>
+        </div>
+    </footer><script src="js/vendor/jquery-3.2.0.min.js">
+</script> <script src="js/plugins.js">
+</script> <script src="js/main.js">
+</script>
+</body>
+</html>

@@ -280,18 +280,30 @@ textarea {
         page-break-after: avoid;
     }
 }
+.logo { width:32px; height:32px; }
 
+/* material design color swatch */
+.bluegrey50 { color:#ECEFF1; }
+.bluegrey100 { color:#CFD8DC; }
+.bluegrey200 { color:#B0BEC5; }
+.bluegrey300 { color:#90A4AE; }
+.bluegrey400 { color:#78909C; }
+.bluegrey500 { color:#607D8B; }
+.bluegrey500-bkgnd { background-color:#607D8B; }
+.bluegrey600 { color:#546E7A; }
+.bluegrey700 { color:#455A64; }
+.bluegrey800 { color:#37474F; }
+.bluegrey900 { color:#263238; }
 
-/*
-    additions
-*/
-img.zt-top-logo {
-    height: 1.75rem;
-    width: auto;
-    position: absolute;
-    top: 0.75rem;
-    left: 1.25rem;
-}
-zt-banner-color {
-    color: #333333;
-}
+#networkNew { cursor: pointer; }
+#networkEdit { cursor: pointer; }
+#networkUsers { cursor: pointer; }
+#userNew { cursor: pointer; }
+#userEdit { cursor: pointer; }
+#networkRemove { cursor: pointer; }
+#userRemove { cursor: pointer; }
+
+ 
+#networkPanel { display: none;}
+#userList { display: none;}
+#userPanel { display: none;} 
