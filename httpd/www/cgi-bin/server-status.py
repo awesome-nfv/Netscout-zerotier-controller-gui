@@ -22,7 +22,7 @@ def check_value(error_obj, list_obj, key):
 
 def return_token():
     with open("../../config.ini") as f:
-    config_file= f.read()
+        config_file= f.read()
     config = ConfigParser.RawConfigParser(allow_no_value=True)
     config.readfp(io.BytesIO(config_file))
     token = config.get("zerotier", "token")
