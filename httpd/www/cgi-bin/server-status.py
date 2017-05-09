@@ -20,13 +20,21 @@ def check_value(error_obj, list_obj, key):
         error_obj['message'] = key + 'not sent'
     return error_obj
 
+def return_token():
+    with open("../../config.ini") as f:
+    config_file= f.read()
+    config = ConfigParser.RawConfigParser(allow_no_value=True)
+    config.readfp(io.BytesIO(config_file))
+    token = config.get("zerotier", "token")
+    return token
+
 def main():
     """ spam spam spam """
     arguments = cgi.FieldStorage()
     callback = arguments.getvalue('callback')
     #error_obj = {'flag': False, 'message': ''}
     url = "http://localhost:9993/controller"
-    token = "zw6mri8j8q9kybizo5ybc846"
+    token = return_token()
     request = urllib2.Request(url, None, headers={"X-ZT1-Auth": token})
     response = urllib2.urlopen(request)
     json_obj = response.read()
