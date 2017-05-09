@@ -4,6 +4,8 @@ import os
 import urllib2
 import cgi
 import json
+import ConfigParser
+import io
 
 def json_output(json_obj, callback):
     """ spam spam spam"""
