@@ -17,6 +17,14 @@ def checkValue(errorObj, listObj, key):
        errorObj['message'] = key + 'not sent'
     return errorObj
 
+def return_token():
+    with open("../../config.ini") as f:
+        config_file= f.read()
+    config = ConfigParser.RawConfigParser(allow_no_value=True)
+    config.readfp(io.BytesIO(config_file))
+    token = config.get("zerotier", "token")
+    return token
+
 def main():
    arguments = cgi.FieldStorage()
    errorObj = { 'flag': False, 'message': ''}
@@ -26,7 +34,7 @@ def main():
       url = "http://localhost:9993/controller/network"
 
       
-   token = "zw6mri8j8q9kybizo5ybc846"
+   token = return_token()
    request = urllib2.Request( url, None, headers={"X-ZT1-Auth": token})
    response = urllib2.urlopen(request)
 
